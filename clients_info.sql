@@ -182,10 +182,6 @@ drop column id_cliente_3;
 /*
 mostro la tabella
 */
-select * from banca.denormalizzata
-
-
-
-
+select * from banca.denormalizzata;
 
 

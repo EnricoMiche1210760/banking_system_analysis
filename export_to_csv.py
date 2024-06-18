@@ -1,6 +1,8 @@
 import mysql.connector
 import getpass
 import pandas as pd
+import warnings
+
 
 user = str(input("Inserire nome utente: "))
 password = getpass.getpass(prompt="Inserire password: ")
@@ -15,14 +17,24 @@ db_config = {
 
 # Connect to the database
 connection = mysql.connector.connect(**db_config)
+cursor = connection.cursor()
+
+try:
+    with open('clients_info.sql', 'r') as sql_file:
+        sql_script = sql_file.read()
+    print("Executing SQL script...")
+    for statement in sql_script.split(';'):
+        if statement.strip():
+            cursor.execute(statement)
+    connection.commit()
+except Exception as e:
+    print(f"Warning: {str(e)}")
+    connection.rollback()
+
 query = "SELECT * FROM banca.denormalizzata"
-
-# Fetch data into a pandas DataFrame
+warnings.filterwarnings("ignore")
 df = pd.read_sql(query, connection)
-
 file_to_export = 'info_clienti.csv'
-
-# Export DataFrame to CSV
 df.to_csv(file_to_export, index=False)
 
 # Close the connection
