@@ -1,8 +1,9 @@
 import mysql.connector
+import getpass
 import pandas as pd
 
 user = str(input("Inserire nome utente: "))
-password = str(input("Inserire password: "))
+password = getpass.getpass(prompt="Inserire password: ")
 
 # Database connection configuration
 db_config = {
@@ -19,10 +20,12 @@ query = "SELECT * FROM banca.denormalizzata"
 # Fetch data into a pandas DataFrame
 df = pd.read_sql(query, connection)
 
+file_to_export = 'info_clienti.csv'
+
 # Export DataFrame to CSV
-df.to_csv('output.csv', index=False)
+df.to_csv(file_to_export, index=False)
 
 # Close the connection
 connection.close()
 
-print("Data has been exported to 'output.csv'.")
+print(f"Data has been exported to '{file_to_export}'.")
