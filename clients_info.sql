@@ -120,30 +120,30 @@ order by 1;
 create temporary table banca.transazioni_per_conto as
 select
 clt.id_cliente as id_cliente_3, 
-sum(case 
-	when tipo_trans.segno = '-' and tipo_cont.desc_tipo_conto = 'Conto Base' then 1 else 0 end
-   ) as num_transazioni_uscita_base,
-sum(case 
-	when tipo_trans.segno = '-' and tipo_cont.desc_tipo_conto = 'Conto Business' then 1 else 0 end
-   ) as num_transazioni_uscita_business,
-sum(case 
-	when tipo_trans.segno = '-' and tipo_cont.desc_tipo_conto = 'Conto Privati' then 1 else 0 end
-   ) as num_transazioni_uscita_privati,
-   sum(case 
-	when tipo_trans.segno = '-' and tipo_cont.desc_tipo_conto = 'Conto Famiglie' then 1 else 0 end
-   ) as num_transazioni_uscita_famiglie,
-sum(case 
-	when tipo_trans.segno = '+' and tipo_cont.desc_tipo_conto = 'Conto Base' then 1 else 0 end
-   ) as num_transazioni_entrata_base,
-sum(case 
-	when tipo_trans.segno = '+' and tipo_cont.desc_tipo_conto = 'Conto Business' then 1 else 0 end
-   ) as num_transazioni_entrata_business,
-sum(case 
-	when tipo_trans.segno = '+' and tipo_cont.desc_tipo_conto = 'Conto Privati' then 1 else 0 end
-   ) as num_transazioni_entrata_privati,
-sum(case 
-	when tipo_trans.segno = '+' and tipo_cont.desc_tipo_conto = 'Conto Famiglie' then 1 else 0 end
-   ) as num_transazioni_entrata_famiglie   
+round(sum(case 
+	when tipo_trans.segno = '-' and tipo_cont.desc_tipo_conto = 'Conto Base' then trans.importo else 0 end
+   ), 2) as importo_transato_uscita_base,
+round(sum(case 
+	when tipo_trans.segno = '-' and tipo_cont.desc_tipo_conto = 'Conto Business' then trans.importo else 0 end
+   ), 2) as importo_transato_uscita_business,
+round(sum(case 
+	when tipo_trans.segno = '-' and tipo_cont.desc_tipo_conto = 'Conto Privati' then trans.importo else 0 end
+   ), 2) as importo_transato_uscita_privati,
+round(sum(case 
+	when tipo_trans.segno = '-' and tipo_cont.desc_tipo_conto = 'Conto Famiglie' then trans.importo else 0 end
+   ), 2) as importo_transato_uscita_famiglie,
+round(sum(case 
+	when tipo_trans.segno = '+' and tipo_cont.desc_tipo_conto = 'Conto Base' then trans.importo else 0 end
+   ), 2) as importo_transato_entrata_base,
+round(sum(case 
+	when tipo_trans.segno = '+' and tipo_cont.desc_tipo_conto = 'Conto Business' then trans.importo else 0 end
+   ), 2) as importo_transato_entrata_business,
+round(sum(case 
+	when tipo_trans.segno = '+' and tipo_cont.desc_tipo_conto = 'Conto Privati' then trans.importo else 0 end
+   ), 2) as importo_transato_entrata_privati,
+round(sum(case 
+	when tipo_trans.segno = '+' and tipo_cont.desc_tipo_conto = 'Conto Famiglie' then trans.importo else 0 end
+   ), 2) as importo_transato_entrata_famiglie   
 from banca.cliente clt
 left join banca.conto cont
 on clt.id_cliente = cont.id_cliente
